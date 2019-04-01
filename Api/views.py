@@ -345,14 +345,8 @@ class getNewsList(View):
 
     def get(self, request):
         headId = int(request.GET.get("head", 0))
-        type = int(request.GET.get("type", 6))
         number = int(request.GET.get("number", 5))
-
-        if headId != 0:
-
-            posts = News.objects.filter( id__lt=headId).order_by("-create_time")[:number]
-        else:
-            posts = News.objects.all().order_by("-create_time")[:number]
+        posts = News.objects.all().order_by("-create_time")[headId:number]
 
         result = []
         for one in posts:
@@ -556,12 +550,12 @@ class getHotFilmReview(View):
     def get(self, request):
         headId = int(request.GET.get("head", 0))
         number = int(request.GET.get("number", 10))
-
-        if headId != 0:
-
-            posts = FilmReview.objects.filter(id__lt=headId,active=True).order_by("-create_time")[:number]
-        else:
-            posts = FilmReview.objects.filter(active=True).order_by("-create_time")[:number]
+        posts = FilmReview.objects.filter(active=True).order_by("-create_time")[headId:number]
+        # if headId != 0:
+        #
+        #     posts = FilmReview.objects.filter(id__lt=headId,active=True).order_by("-create_time")[:number]
+        # else:
+        #     posts = FilmReview.objects.filter(active=True).order_by("-create_time")[:number]
 
         result = []
         for one in posts:
@@ -618,7 +612,7 @@ class getPointFilmReview(View):
             isGood=True
 
 
-        replys = FilmReviewComment.objects.filter(news__id=id,active=True)
+        replys = FilmReviewComment.objects.filter(FilmReview__id=id,active=True)
         replyNum = replys.count()
         reply = []
         for one in replys:
@@ -761,7 +755,6 @@ class replyPointFilmReview(View):
 
 
 
-
 # 获取电影
 class getFilmList(View):
     def get(self, request):
@@ -769,10 +762,13 @@ class getFilmList(View):
         number = int(request.GET.get("number", 10))
         type = int(request.GET.get("type", 0)) # 0 未上映 1 上映
         isOnScreen=False if type==0 else True
-        if headId != 0:
-            posts = Film.objects.filter(id__lt=headId,active=True,isOnScreen=isOnScreen).order_by("-on_time")[:number]
-        else:
-            posts = Film.objects.filter(active=True,isOnScreen=isOnScreen).order_by("-on_time")[:number]
+
+        posts = Film.objects.filter(active=True, isOnScreen=isOnScreen).order_by("-on_time")[headId:number]
+
+        # if headId != 0:
+        #     posts = Film.objects.filter(id__lt=headId,active=True,isOnScreen=isOnScreen).order_by("-on_time")[headId:number]
+        # else:
+        #     posts = Film.objects.filter(active=True,isOnScreen=isOnScreen).order_by("-on_time")[headId:number]
 
         result = []
         for one in posts:
