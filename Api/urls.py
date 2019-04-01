@@ -43,7 +43,7 @@ urlpatterns = [
     url(r'^scorePointFilm/',(views.scorePointFilm.as_view()), name="scorePointFilm"),
     url(r'^reviewPointFilm/',(views.reviewPointFilm.as_view()), name="reviewPointFilm"),# 发长影评,这个接口小伙子们不要了,辣鸡玩意
 
-    url(r'^replyPointFilm/',(views.replyPointFilm.as_view()), name="replyPointFilm"),# 发长影评,这个接口小伙子们不要了
+    url(r'^replyPointFilm/',(views.replyPointFilm.as_view()), name="replyPointFilm"),# 发短影评
 
 
     # 通用信息获取
