@@ -30,22 +30,22 @@ class User(models.Model):
         return self.username
 
 
-class Tags(models.Model):
-    tag = models.CharField(max_length=10, verbose_name=u'标签', unique=True)
-
-    class Meta:
-        verbose_name = u'标签'
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.tag
+# class Tags(models.Model):
+#     tag = models.CharField(max_length=10, verbose_name=u'标签', unique=True)
+#
+#     class Meta:
+#         verbose_name = u'标签'
+#         verbose_name_plural = verbose_name
+#
+#     def __str__(self):
+#         return self.tag
 
 
 class Film(models.Model):
     name = models.CharField(max_length=40, verbose_name=u'电影名')
     info = models.CharField(max_length=1024, verbose_name=u'电影简介')
     on_time = models.DateTimeField(verbose_name=u'上映时间')
-    tag = models.ManyToManyField(Tags, verbose_name=u'标签')
+    # tag = models.ManyToManyField(Tags, verbose_name=u'标签')
 
     # 页面上的 宽海报
     poster = models.ImageField(verbose_name=u'海报', upload_to='upload')

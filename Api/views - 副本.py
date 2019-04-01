@@ -43,7 +43,7 @@ class register(View):
             if con.exists(email) == 0:
                 result = {'state': "-1", "msg": "验证码已过期"}
             else:
-                trueCode=str(con.get(email).decode('utf-8'))
+                trueCode=str(con.get(email))
                 print(trueCode)
                 print(veriCode)
                 if(trueCode==veriCode):
@@ -181,7 +181,7 @@ class changePwdByself(View):
         newPassword = request.POST.get("newPassword")
         username = request.POST.get("username")
         user = User.objects.filter(username=username)
-        if len(user) == 0:
+        if len(user) > 0:
             result = [{"statu": -1, "msg": "账号不存在"}]
         else:
             user=user[0]
@@ -417,7 +417,7 @@ class getPointNews(View):
         one=news
         temp = {"id": one.id, "author": one.author.nickName, "photo": str(one.picture),
                 "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")), "Title": one.title,
-                "clickNum": one.hits, "replyNum": one.commented_members, "content": one.content,
+                "clickNum": one.hits, "replyNum": one.commented_members, "content": one.Content,
                 "isGood":isGood,"replys": reply,"replyNum":replyNum,
                 }
 
