@@ -5,16 +5,13 @@ from django.contrib import admin
 from django.utils.text import capfirst
 
 
-
+class AllAdmin(admin.ModelAdmin):
+    list_per_page = 30
 
 
 class UserAdmin(admin.ModelAdmin):
 
     search_fields = ('username', "nickName")
-    # fields = ('name', "nickName", "stuCode", "registerTime", "headImage","image", "isRegisted", "onLine", "isLocked", 'isGroupUser',)
-
-
-
     list_per_page = 30
     date_hierarchy = 'registerTime'
     ordering = ('-registerTime',)
@@ -56,11 +53,21 @@ def index_decorator(func):
 admin.site.index = index_decorator(admin.site.index)
 admin.site.app_index = index_decorator(admin.site.app_index)
 
-admin.site.site_header = '数院微信小程序后台管理'
+admin.site.site_header = 'My_Android后台管理'
 admin.site.site_title = '后台管理'
-admin.site.index_title = '数院微信小程序'
+admin.site.index_title = 'My_Android'
 
 admin.site.register(User, UserAdmin)
+admin.site.register(Film, AllAdmin)
+admin.site.register(Mark, AllAdmin)
+admin.site.register(FilmComment, AllAdmin)
+admin.site.register(FilmReview, AllAdmin)
+admin.site.register(FilmReviewComment, AllAdmin)
+
+admin.site.register(FilmReviewGoods, AllAdmin)
+admin.site.register(News, AllAdmin)
+admin.site.register(NewsComment, AllAdmin)
+admin.site.register(NewsGoods, AllAdmin)
 
 
 # admin.site.register(Rota, RotaAdmin)

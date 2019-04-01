@@ -52,59 +52,15 @@ def makeSession(username):
     return session
 
 
-# 根据学号获取当前用户是否有新文章回复
-def getNewReply(stuCode):
-    result = []
-    infos = MathCommunication.objects.filter(fromUser=stuCode)
-    for temp in infos:
-        if temp.replyNum > temp.lastDetectNum:
-            one = {"id": temp.id, "Title": temp.Title, "Time": temp.Time.strftime("%Y-%m-%d %H:%M:%S"),
-                   "nickName": temp.fromUser.nickName, "headImage": str(temp.fromUser.headImage),
-                   "Content": temp.Content, "userId": str(temp.fromUser.id)
-                   }
-            result.append(one)
-    return result
+def makeRegisterCheckCode(email):
+
+    code = ''.join(str(random.randint(1000,9999)))
+    con = get_redis_connection("default")
+    con.set(email,code)
+    return code
 
 
-# 根据学号获取当前用户的新的文章回复
-def getUnReadReplyDetail(stuCode):
-    result = []
-    infos = MathCommunication.objects.filter(fromUser=stuCode)
-    # allReplys = ReplyInfo.objects.filter(toPost in infos, isRead=False).order_by("-Time")
-    for temp in infos:
-        allReplys=ReplyInfo.objects.filter(toPost=temp,isRead=False).order_by("-Time")
-        for oneTemp in allReplys:
-            one = {"id": temp.id, "Title": temp.Title, "Time": oneTemp.Time.strftime("%Y-%m-%d %H:%M:%S"),
-                   "nickName": oneTemp.fromUser.nickName, "headImage": str(oneTemp.fromUser.headImage),
-                   "Content": oneTemp.Content, "userId": str(oneTemp.fromUser.id)
-                   }
-            result.append(one)
-
-    return result
-
-
-# 根据学号获取用户的新消息,并返回发消息的用户和最后一条消息
-def getNewMessage(stuCode):
-    result = []
-    infos = Message.objects.filter(toUser=stuCode, isRead=False).order_by("-Time")
-    newList = []
-    for temp in infos:
-        if temp.fromUser not in newList:
-            newList.append(temp.fromUser)
-            nums = Message.objects.filter(toUser=stuCode, fromUser=temp.fromUser, isRead=False).count()
-            # temp=searchInfo.[nums-1]
-            if temp.Content == "":
-                isPhoto = "True"
-            else:
-                isPhoto = "False"
-            result.append({"fromUserId": temp.fromUser.id, "fromName": temp.fromUser.nickName,
-                           "headImage": str(temp.fromUser.headImage),
-                           "isPhoto": isPhoto,
-                           "image": str(temp.image), "message": temp.Content,
-                           "Time": temp.Time.strftime('%Y-%m-%d %H:%M:%S'),
-                           "isPhoto": isPhoto, "unReadNums": nums
-                           })
-    return result
+# print("重新获取")
 
 
 # 发消息

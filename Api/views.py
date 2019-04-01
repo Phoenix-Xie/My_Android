@@ -1,13 +1,16 @@
 from django.shortcuts import render
 
 from Api.threadTools import sendEmailThread
-from Api.tools import CrossDomainReturn, makeSession, encryptPwd, judgePwd, makeCheckCode, checkUserLogin
+from Api.tools import CrossDomainReturn, makeSession, encryptPwd, judgePwd, makeCheckCode, checkUserLogin, \
+    makeRegisterCheckCode
 from Api.models import *
 from django.shortcuts import render
 from django.views.generic.base import View
 from django.core import serializers
 
 from django.views.decorators.cache import cache_page
+from django_redis import get_redis_connection
+from django.core.cache import cache
 from django_redis import get_redis_connection
 from django.core.cache import cache
 # Create your views here.
@@ -27,8 +30,8 @@ class register(View):
         username=request.POST.get("username")
         email=request.POST.get("email")
         password=request.POST.get("password")
-        nickname=request.POST.get("nickname")
-
+        nickname=request.POST.get("nickname",username)
+        veriCode=request.POST.get("veriCode") # 验证码
         password=encryptPwd(username, password)
 
         user = User.objects.filter(username=username)
@@ -36,11 +39,18 @@ class register(View):
         if (len(user) > 0):
             result = {'state': "-3", "msg": "该账号已被注册,请直接登录"}
         else:
-            user=User.objects.create(username=username,email=email,password=password,nickName=nickname)
-            user.save()
-            # todo 发邮件
-
-            result = {'state': "1", "session": makeSession(user.username), "msg": "注册成功"}
+            con = get_redis_connection("default")
+            if con.exists(email) == 0:
+                result = {'state': "-1", "msg": "验证码已过期"}
+            else:
+                trueCode=con.get(email)
+                if(trueCode==veriCode):
+                    con.set(email, None,1)
+                    user=User.objects.create(username=username,email=email,password=password,nickName=nickname)
+                    user.save()
+                    result = {'state': "1", "session": makeSession(user.username), "msg": "注册成功"}
+                else:
+                    result = {'state': "-2", "msg": "验证码错误"}
 
         return CrossDomainReturn(result)
 
@@ -69,7 +79,8 @@ class login(View):
                 session=makeSession(username)
                 result = [{"statu": 1, "session": session, "nickName": user.nickName,
                            "registerTime": user.registerTime.strftime("%Y-%m-%d %H:%M:%S"),
-                           "username": user.username,
+                           "username": user.username,"headImage":str(user.headImage),
+                           "email":user.email
                            }]
             else:
                 result = [{"statu": -2, "msg": "密码不正确"}]
@@ -139,6 +150,57 @@ class changePwd(View):
         return CrossDomainReturn(result)
 
 
+# 发送验证码
+class sendCheckCode(View):
+    '''修改密码'''
+    def post(self, request):
+        email = request.POST.get("email")
+
+
+
+        user = User.objects.filter(email=email)
+        if len(user) > 0:
+            result = [{"statu": -1, "msg": "该邮箱已被注册"}]
+        else:
+            code=makeRegisterCheckCode(email)
+            content ="你好,你本次操作的验证码为:" + str(code)
+            sendMail = sendEmailThread("My_Android", content, email)
+            sendMail.start()
+            result = [{"statu": 1, "msg": "发送验证码成功!"}]
+
+        return CrossDomainReturn(result)
+
+    def other(self, request):
+        result = "非法请求"
+        return CrossDomainReturn(result)
+
+# 根据原密码修改密码
+class changePwdByself(View):
+    '''修改密码'''
+    def post(self, request):
+        oldPassword = request.POST.get("oldPassword")
+        newPassword = request.POST.get("newPassword")
+        username = request.POST.get("username")
+        user = User.objects.filter(username=username)
+        if len(user) > 0:
+            result = [{"statu": -1, "msg": "账号不存在"}]
+        else:
+            user=user[0]
+            if judgePwd(username, oldPassword):
+                user.password = encryptPwd(username, newPassword)
+                user.save()
+                makeSession(username)
+                result = [{"statu": 1, "msg": "修改成功,请重新登录!"}]
+            else:
+
+                result = [{"statu": -2, "msg": "原密码错误!"}]
+
+        return CrossDomainReturn(result)
+
+    def other(self, request):
+        result = "非法请求"
+        return CrossDomainReturn(result)
+
 # 修改头像
 class changeHeadImage(View):
     '''修改头像'''
@@ -185,6 +247,65 @@ class changeNickName(View):
 
 
 
+# 我的影评
+class getMyFirmComment(View):
+    ''''''
+
+    def post(self, request):
+        user = checkUserLogin(request)
+        if not user:
+            temp = {"state": -1, "msg": "尚未登陆"}
+            return CrossDomainReturn(temp)
+
+        posts=FilmReview.objects.filter(user=user).order_by("-create_time")
+
+
+        result = []
+        for one in posts:
+            temp = {"id": one.id, "title": one.title, "firmName": one.firm.name,
+                    "thumbnail":str(one.thumbnail),
+                    "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")),
+                    }
+            result.append(temp)
+
+        posts = serializers.serialize("json", posts)
+
+        result = {"state": 1, "result": result}
+        return CrossDomainReturn(result)
+
+    def other(self, request):
+        result = "非法请求"
+        return CrossDomainReturn(result)
+
+# 我的新闻评论
+class getMyNewsComment(View):
+    ''''''
+
+    def post(self, request):
+        user = checkUserLogin(request)
+        if not user:
+            temp = {"state": -1, "msg": "尚未登陆"}
+            return CrossDomainReturn(temp)
+
+        posts = NewsComment.objects.filter(user=user).order_by("-create_time")
+
+        result = []
+        for one in posts:
+            temp = {"id": one.id, "title": one.title, "firmName": one.news.title,
+                    "thumbnail": str(one.news.picture),
+                    "create_time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")),
+                    }
+            result.append(temp)
+
+
+
+        result = {"state": 1, "result": result}
+        return CrossDomainReturn(result)
+
+    def other(self, request):
+        result = "非法请求"
+        return CrossDomainReturn(result)
+
 # 获取新闻列表
 class getNewsList(View):
     ''''''
@@ -198,7 +319,7 @@ class getNewsList(View):
 
             posts = News.objects.filter( id__lt=headId).order_by("-create_time")[:number]
         else:
-            posts = News.objects.all.order_by("-create_time")[:number]
+            posts = News.objects.all().order_by("-create_time")[:number]
 
         result = []
         for one in posts:
@@ -208,7 +329,7 @@ class getNewsList(View):
                     }
             result.append(temp)
 
-        posts = serializers.serialize("json", posts)
+        # posts = serializers.serialize("json", posts)
 
         result = {"state": 1, "result": result}
         return CrossDomainReturn(result)
@@ -242,14 +363,6 @@ class getPointNews(View):
         news.save()
 
 
-
-
-
-        # if one.fromUser == user:  # 如果是本人登录的话,更新最后的已读访问
-        #     one.lastDetectNum = one.replyNum
-        #     aa = ReplyInfo.objects.filter(toPost=one)
-        #     aa.update(isRead=True)
-
         isGood=False
         goods = NewsGoods.objects.filter(fromUser=user, toNews__id=id)
 
@@ -259,9 +372,10 @@ class getPointNews(View):
 
 
         replys = NewsComment.objects.filter(news__id=id)
+        replyNum=replys.count()
         reply = []
         for one in replys:
-            temp = {"id": one.id, "author": one.author.nickName,
+            temp = {"id": one.id, "author": one.author.nickName,"autherHeadPhoto":str(one.author.headImage),
                     "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")),
                     "content":one.content
                     }
@@ -271,7 +385,7 @@ class getPointNews(View):
         temp = {"id": one.id, "author": one.author.nickName, "photo": str(one.picture),
                 "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")), "Title": one.title,
                 "clickNum": one.hits, "replyNum": one.commented_members, "content": one.Content,
-                "isGood":isGood,"replys": reply
+                "isGood":isGood,"replys": reply,"replyNum":replyNum,
                 }
 
 
@@ -472,9 +586,10 @@ class getPointFilmReview(View):
 
 
         replys = FilmReviewComment.objects.filter(news__id=id,active=True)
+        replyNum = replys.count()
         reply = []
         for one in replys:
-            temp = {"id": one.id, "author": one.author.nickName,
+            temp = {"id": one.id, "author": one.author.nickName,"autherHeadPhoto":str(one.author.headImage),
                     "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")),
                     "content":one.content
                     }
@@ -484,7 +599,7 @@ class getPointFilmReview(View):
         temp = {"id": one.id, "author": one.author.nickName, "photo": str(one.picture),
                 "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")), "Title": one.title,
                 "clickNum": one.hits, "replyNum": one.commented_members, "content": one.Content,
-                "isGood":isGood,"replys": reply
+                "isGood":isGood,"replys": reply,"replyNum":replyNum
                 }
 
 
@@ -622,9 +737,9 @@ class getFilmList(View):
         type = int(request.GET.get("type", 0)) # 0 未上映 1 上映
         isOnScreen=False if type==0 else True
         if headId != 0:
-            posts = Film.objects.filter(id__lt=headId,active=True,isOnScreen=isOnScreen).order_by("-create_time")[:number]
+            posts = Film.objects.filter(id__lt=headId,active=True,isOnScreen=isOnScreen).order_by("-on_time")[:number]
         else:
-            posts = Film.objects.filter(active=True,isOnScreen=isOnScreen).order_by("-create_time")[:number]
+            posts = Film.objects.filter(active=True,isOnScreen=isOnScreen).order_by("-on_time")[:number]
 
         result = []
         for one in posts:
@@ -673,6 +788,7 @@ class getPointFilm(View):
         #     one.lastDetectNum = one.replyNum
         #     aa = ReplyInfo.objects.filter(toPost=one)
         #     aa.update(isRead=True)
+
         the_film = one[0]
         isGood=False
         goods = Mark.objects.filter(user=user, firm=the_film)
@@ -680,16 +796,16 @@ class getPointFilm(View):
         if (goods.count() != 0):
             isGood=True
 
+        replys = FilmReview.objects.filter(film__id=id, active=True)
+        replyNum = replys.count()
+        reply = []
 
-        # replys = FilmReviewComment.objects.filter(news__id=id,active=True)
-        # reply = []
-        # for one in replys:
-        #     temp = {"id": one.id, "author": one.author.nickName,
-        #             "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")),
-        #             "content":one.content
-        #             }
-        #     reply.append(temp)
-
+        for one in replys:
+            temp = {"id": one.id, "author": one.author.nickName, "autherHeadPhoto": str(one.author.headImage),
+                    "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")),
+                    "title": one.title
+                    }
+            reply.append(temp)
 
 
         temp = {"id": the_film.id,
@@ -701,6 +817,7 @@ class getPointFilm(View):
                        'time': str(the_film.on_time.strftime('%H:%M:%S')),
                        'marked_members': the_film.marked_members,
                        'comment_members': the_film.commented_member,
+                        "isMark":isGood,"replys":reply,"replyNum":replyNum
                 }
 
 
@@ -787,9 +904,9 @@ class reviewPointFilm(View):
             active = models.BooleanField(default=True, verbose_name=u'情况')
         '''
         title = request.POST.get("title", "None")
-        subtitle = request.POST.get("title", "None")
-        content = request.POST.get("title","None")
-        thumbnail = request.File.get("title", "None")
+        subtitle = request.POST.get("subtitle", "None")
+        content = request.POST.get("content","None")
+        thumbnail = request.File.get("thumbnail", "None")
 
         FilmReview.objects.create(active=True,author=user,title=title,firm=firm,subtitle=subtitle,
                                   content=content,thumbnail=thumbnail)

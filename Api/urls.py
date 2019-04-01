@@ -11,11 +11,15 @@ urlpatterns = [
     url(r'^login/', views.login.as_view(), name="login"), # 登录
     url(r'^LookForPwd/', views.LookForPwd.as_view(), name="LookForPwd"), # 找回密码
     url(r'^changePwd/', views.changePwd.as_view(), name="changePwd"),
-
+    url(r'^sendCheckCode/', views.sendCheckCode.as_view(), name="sendCheckCode"), # 注册时发邮箱的验证码
+    url(r'^changePwdByself/', views.changePwdByself.as_view(), name="changePwdByself"), # 已知密码时修改密码
 
     # 个人中心
     url(r'^changeHeadImage/', views.changeHeadImage.as_view(), name="changeHeadImage"), # 修改头像
     url(r'^changeNickName/', views.changeNickName.as_view(), name="changeNickName"), # 修改昵称
+    ## 我的评论
+    url(r'^getMyFirmComment/', views.getMyFirmComment.as_view(), name="getMyFirmComment"), # 我的影评
+    url(r'^getMyNewsComment/', views.getMyNewsComment.as_view(), name="getMyNewsComment"), # 我的新闻评论
     # url(r'^getMy/', views.changeNickName.as_view(), name="changeNickName"), # 修改昵称
     # url(r'^changeNickName/', views.changeNickName.as_view(), name="changeNickName"), # 修改昵称
 

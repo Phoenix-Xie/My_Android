@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0eac4075-5b5d-4c5b-8286-0118e7dda6c3" name="Default Changelist" comment="" />
+    <list default="true" id="0eac4075-5b5d-4c5b-8286-0118e7dda6c3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/tools.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyAndroid/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MyAndroid/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/My_Android" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +25,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MyAndroid/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="509">
-              <caret line="47" column="4" selection-start-line="47" selection-start-column="4" selection-end-line="47" selection-end-column="4" />
+            <state relative-caret-position="178">
+              <caret line="85" column="5" lean-forward="true" selection-start-line="85" selection-start-column="5" selection-end-line="85" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -30,8 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Api/admin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="63" selection-start-line="63" selection-end-line="63" />
+            <state relative-caret-position="464">
+              <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -47,8 +56,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Api/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+            <state relative-caret-position="334">
+              <caret line="26" column="50" lean-forward="true" selection-start-line="26" selection-start-column="50" selection-end-line="26" selection-end-column="50" />
               <folding>
                 <element signature="e#1#20#0" expanded="true" />
               </folding>
@@ -59,10 +68,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Api/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="51" column="6" selection-start-line="51" selection-start-column="6" selection-end-line="51" selection-end-column="6" />
+            <state relative-caret-position="179">
+              <caret line="313" column="48" lean-forward="true" selection-start-line="313" selection-start-column="48" selection-end-line="313" selection-end-column="48" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
+                <element signature="e#2553#3218#0" />
+                <element signature="e#4254#4810#0" />
+                <element signature="e#4750#5418#0" />
+                <element signature="e#8473#9293#0" />
+                <element signature="e#8446#10783#0" />
+                <element signature="e#10829#12260#0" />
+                <element signature="e#12309#13434#0" />
               </folding>
             </state>
           </provider>
@@ -71,10 +87,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Api/tools.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4212">
-              <caret line="168" column="28" selection-start-line="168" selection-start-column="28" selection-end-line="168" selection-end-column="28" />
+            <state relative-caret-position="283">
+              <caret line="58" column="23" lean-forward="true" selection-start-line="57" selection-start-column="4" selection-end-line="58" selection-end-column="23" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#1121#1556#0" />
               </folding>
             </state>
           </provider>
@@ -83,8 +100,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Api/threadTools.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="9" column="49" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="49" />
+            <state relative-caret-position="267">
+              <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+              <folding>
+                <element signature="e#150#166#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -92,10 +112,18 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Api/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="12" column="16" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="16" />
+            <state relative-caret-position="319">
+              <caret line="104" column="9" selection-start-line="104" selection-start-column="4" selection-end-line="104" selection-end-column="9" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
+                <element signature="e#111#1241#0" />
+                <element signature="e#1274#1481#0" />
+                <element signature="e#2458#2874#0" />
+                <element signature="e#2928#3524#0" />
+                <element signature="e#4542#5193#0" />
+                <element signature="e#5245#5660#0" />
+                <element signature="e#5701#6574#0" />
+                <element signature="e#7350#7765#0" />
               </folding>
             </state>
           </provider>
@@ -118,30 +146,38 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>one.film</find>
+      <find>.all.</find>
+      <find>makeCheckCode</find>
+      <find>thumb</find>
     </findStrings>
     <replaceStrings>
       <replace>one</replace>
+      <replace>.all().</replace>
     </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/MyAndroid/urls.py" />
-        <option value="$PROJECT_DIR$/Api/tools.py" />
         <option value="$PROJECT_DIR$/Api/threadTools.py" />
+        <option value="$PROJECT_DIR$/Api/admin.py" />
+        <option value="$PROJECT_DIR$/Api/tools.py" />
         <option value="$PROJECT_DIR$/Api/urls.py" />
         <option value="$PROJECT_DIR$/Api/models.py" />
-        <option value="$PROJECT_DIR$/Api/admin.py" />
-        <option value="$PROJECT_DIR$/MyAndroid/settings.py" />
         <option value="$PROJECT_DIR$/Api/views.py" />
+        <option value="$PROJECT_DIR$/MyAndroid/settings.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -230,15 +266,15 @@
       <updated>1553860585999</updated>
       <workItem from="1553860588616" duration="758000" />
       <workItem from="1553936956464" duration="8067000" />
-      <workItem from="1554013431512" duration="1083000" />
+      <workItem from="1554013431512" duration="9066000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9908000" />
+    <option name="totallyTimeSpent" value="17891000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14552239" />
@@ -254,7 +290,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="manage.py@MyAndroid" order="10" visible="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="manage.py@MyAndroid" order="10" visible="true" weight="0.329718" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="12" />
       <window_info anchor="bottom" id="Python Console" order="13" />
@@ -269,46 +305,65 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Api/apps.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Api/tests.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Api/tools.py">
+    <entry file="file://$PROJECT_DIR$/Api/admin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4212">
-          <caret line="168" column="28" selection-start-line="168" selection-start-column="28" selection-end-line="168" selection-end-column="28" />
+        <state relative-caret-position="464">
+          <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Api/apps.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/Api/threadTools.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="9" column="49" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="49" />
+        <state relative-caret-position="267">
+          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+          <folding>
+            <element signature="e#150#166#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Api/tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="58" column="23" lean-forward="true" selection-start-line="57" selection-start-column="4" selection-end-line="58" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#1121#1556#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Api/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="12" column="16" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="16" />
+        <state relative-caret-position="319">
+          <caret line="104" column="9" selection-start-line="104" selection-start-column="4" selection-end-line="104" selection-end-column="9" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
+            <element signature="e#111#1241#0" />
+            <element signature="e#1274#1481#0" />
+            <element signature="e#2458#2874#0" />
+            <element signature="e#2928#3524#0" />
+            <element signature="e#4542#5193#0" />
+            <element signature="e#5245#5660#0" />
+            <element signature="e#5701#6574#0" />
+            <element signature="e#7350#7765#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Api/admin.py">
+    <entry file="file://$PROJECT_DIR$/MyAndroid/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="63" selection-start-line="63" selection-end-line="63" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="178">
+          <caret line="85" column="5" lean-forward="true" selection-start-line="85" selection-start-column="5" selection-end-line="85" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -322,17 +377,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MyAndroid/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="509">
-          <caret line="47" column="4" selection-start-line="47" selection-start-column="4" selection-end-line="47" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Api/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+        <state relative-caret-position="334">
+          <caret line="26" column="50" lean-forward="true" selection-start-line="26" selection-start-column="50" selection-end-line="26" selection-end-column="50" />
           <folding>
             <element signature="e#1#20#0" expanded="true" />
           </folding>
@@ -341,10 +389,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Api/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="51" column="6" selection-start-line="51" selection-start-column="6" selection-end-line="51" selection-end-column="6" />
+        <state relative-caret-position="179">
+          <caret line="313" column="48" lean-forward="true" selection-start-line="313" selection-start-column="48" selection-end-line="313" selection-end-column="48" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#2553#3218#0" />
+            <element signature="e#4254#4810#0" />
+            <element signature="e#4750#5418#0" />
+            <element signature="e#8473#9293#0" />
+            <element signature="e#8446#10783#0" />
+            <element signature="e#10829#12260#0" />
+            <element signature="e#12309#13434#0" />
           </folding>
         </state>
       </provider>

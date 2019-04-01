@@ -81,11 +81,26 @@ DATABASES = {
         'NAME': 'MyAndroid',  # os.path.join(BASE_DIR, 'db.sqlite3'),
         'USER': 'root',
         'HOST': '127.0.0.1',
-        'PASSWORD': "1234",  # "bfTEybr8UQ",
+        'PASSWORD': "bfTEybr8UQ",  # "bfTEybr8UQ",
         'PORT': '3306',
     }
 }
 
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100}
+            # "PASSWORD": "密码",
+        }
+    }
+}
+REDIS_TIMEOUT = 7 * 24 * 60 * 60
+CUBES_REDIS_TIMEOUT = 60 * 60
+NEVER_REDIS_TIMEOUT = 365 * 24 * 60 * 60
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

@@ -54,7 +54,6 @@ class Film(models.Model):
 
     score = models.FloatField(default=0.0, verbose_name=u'评分')
     marked_members = models.IntegerField(default=0, verbose_name=u'评分人数')
-
     commented_member = models.IntegerField(default=0, verbose_name=u'评论人数')
     active = models.BooleanField(default=True, verbose_name=u'情况')
     isOnScreen=models.BooleanField(verbose_name="是否上映",default=True)
@@ -108,9 +107,7 @@ class FilmReview(models.Model):
     content = models.TextField(verbose_name="内容")
     commented_members = models.IntegerField(default=0, verbose_name=u'评论人数')
     hits = models.IntegerField(default=0, verbose_name=u'点击量')
-
     thumbnail = models.ImageField(verbose_name=u'缩略图', upload_to='upload')
-
     active = models.BooleanField(default=True, verbose_name=u'情况')
 
     class Meta:
