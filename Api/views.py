@@ -306,6 +306,40 @@ class getMyNewsComment(View):
         result = "非法请求"
         return CrossDomainReturn(result)
 
+
+# 删除我的评论
+class deleteMyNewsComment(View):
+    ''''''
+
+    def post(self, request):
+        user = checkUserLogin(request)
+        if not user:
+            temp = {"state": -1, "msg": "尚未登陆"}
+            return CrossDomainReturn(temp)
+
+        id=request.POST.get("id") # 要删除对象的id
+        type=str(request.POST.get("id",0)) # 要删除的评论类型,0是电影的,1是新闻的
+        if type=='0':
+            temp=FilmComment.objects.filter(id=id,author=user)
+        elif type=="1":
+            temp = NewsComment.objects.filter(id=id, author=user)
+        else:
+            temp = {"state": -3, "msg": "数据不全"}
+            return CrossDomainReturn(temp)
+        if len(temp) > 0:
+            temp = temp[0]
+            temp.delete()
+            temp = {"state": 1, "msg": "删除成功"}
+        else:
+            temp = {"state": -2, "msg": "删除失败,无权或无文章"}
+
+
+        return CrossDomainReturn(temp)
+
+    def other(self, request):
+        result = "非法请求"
+        return CrossDomainReturn(result)
+
 # 获取新闻列表
 class getNewsList(View):
     ''''''
@@ -879,7 +913,7 @@ class reviewPointFilm(View):
             temp = {"state": -1, "msg": "尚未登陆"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
-        operaType = int(request.POST.get("operaType", 0))  # 1点赞 0取消赞
+
         if id == 0:
             result = {"state": -3, "msg": "错误请求"}
             return CrossDomainReturn(result)
@@ -911,6 +945,40 @@ class reviewPointFilm(View):
         FilmReview.objects.create(active=True,author=user,title=title,firm=firm,subtitle=subtitle,
                                   content=content,thumbnail=thumbnail)
         firm.commented_member+=1
+        firm.save()
+        result = {"state": 1, "result": "成功"}
+
+        return CrossDomainReturn(result)
+
+    def other(self, request):
+        result = "非法请求"
+        return CrossDomainReturn(result)
+
+
+# 给指定id的影评写短的评论
+class replyPointFilm(View):
+
+    def post(self, request):
+        user = checkUserLogin(request)
+        if not user:
+            temp = {"state": -1, "msg": "尚未登陆"}
+            return CrossDomainReturn(temp)
+        id = int(request.POST.get("id", 0))
+        if id == 0:
+            result = {"state": -3, "msg": "错误请求"}
+            return CrossDomainReturn(result)
+        one = Film.objects.filter(id=id)
+        if one.count() <= 0:
+            result = {"state": -2, "msg": "该帖子不存在或已被删除"}
+            return CrossDomainReturn(result)
+        firm = one[0]
+
+        title = request.POST.get("title", "None")
+        content = request.POST.get("content", "None")
+
+        FilmComment.objects.create(active=True, author=user, title=title, firm=firm,
+                                  content=content)
+        firm.commented_member += 1
         firm.save()
         result = {"state": 1, "result": "成功"}
 

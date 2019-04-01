@@ -20,6 +20,8 @@ urlpatterns = [
     ## 我的评论
     url(r'^getMyFirmComment/', views.getMyFirmComment.as_view(), name="getMyFirmComment"), # 我的影评
     url(r'^getMyNewsComment/', views.getMyNewsComment.as_view(), name="getMyNewsComment"), # 我的新闻评论
+    url(r'^deleteMyNewsComment/', views.deleteMyNewsComment.as_view(), name="deleteMyNewsComment"), # 删除我的评论
+
     # url(r'^getMy/', views.changeNickName.as_view(), name="changeNickName"), # 修改昵称
     # url(r'^changeNickName/', views.changeNickName.as_view(), name="changeNickName"), # 修改昵称
 
@@ -39,8 +41,9 @@ urlpatterns = [
     url(r'^getFilmList/', cache_page(10)(views.getFilmList.as_view()), name="getFilmList"),
     url(r'^getPointFilm/',(views.getPointFilm.as_view()), name="getPointFilm"),
     url(r'^scorePointFilm/',(views.scorePointFilm.as_view()), name="scorePointFilm"),
-    url(r'^reviewPointFilm/',(views.reviewPointFilm.as_view()), name="reviewPointFilm"),
+    url(r'^reviewPointFilm/',(views.reviewPointFilm.as_view()), name="reviewPointFilm"),# 发长影评,这个接口小伙子们不要了,辣鸡玩意
 
+    url(r'^replyPointFilm/',(views.replyPointFilm.as_view()), name="replyPointFilm"),# 发长影评,这个接口小伙子们不要了
 
 
     # 通用信息获取
