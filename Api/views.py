@@ -31,7 +31,7 @@ class register(View):
         email=request.POST.get("email")
         password=request.POST.get("password")
         nickname=request.POST.get("nickname",username)
-        veriCode=str(request.POST.get("veriCode")) # 验证码
+        veriCode=str(request.POST.get("vericode")) # 验证码
         password=encryptPwd(username, password)
 
         user = User.objects.filter(username=username)
@@ -40,12 +40,12 @@ class register(View):
             result = {'state': "-3", "msg": "该账号已被注册,请直接登录"}
         else:
             con = get_redis_connection("default")
+            print("email is"+email)
             if con.exists(email) == 0:
                 result = {'state': "-1", "msg": "验证码已过期"}
             else:
-                trueCode=str(con.get(email).decode('utf-8'))
-                print(trueCode)
-                print(veriCode)
+                codee=con.get(email)
+                trueCode=str(codee,encoding='utf-8')
                 if(trueCode==veriCode):
                     con.set(email, None,1)
                     user=User.objects.create(username=username,email=email,password=password,nickName=nickname)
@@ -165,7 +165,7 @@ class sendCheckCode(View):
             content ="你好,你本次操作的验证码为:" + str(code)
             sendMail = sendEmailThread("My_Android", content, email)
             sendMail.start()
-            result = [{"statu": 1, "msg": "发送验证码成功!"}]
+            result = [{"statu": 1, "msg": "发送验证码成功!","code":str(code)}]
 
         return CrossDomainReturn(result)
 
@@ -261,7 +261,7 @@ class getMyFirmComment(View):
 
         result = []
         for one in posts:
-            temp = {"id": one.id, "title": one.title, "firmName": one.firm.name,
+            temp = {"id": one.id, "title": one.title, "firmName": one.film.name,
                     "thumbnail":str(one.thumbnail),
                     "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")),
                     }
@@ -564,7 +564,7 @@ class getHotFilmReview(View):
                 'subtitle': one.subtitle,
                 'author_id': one.author.id,
                 'author_name': one.author.username,
-                'author_head': one.author.head_image.url,
+                'author_head': one.author.headImage.url,
                 'comment_num': one.commented_members,
                 'create_time': str(one.create_time.strftime('%Y-%m-%d %H:%M:%S')),
                 'update_time': str(one.update_time.strftime('%Y-%m-%d %H:%M:%S')),
@@ -612,7 +612,7 @@ class getPointFilmReview(View):
             isGood=True
 
 
-        replys = FilmReviewComment.objects.filter(FilmReview__id=id,active=True)
+        replys = FilmReviewComment.objects.filter(film_review__id=id,active=True)
         replyNum = replys.count()
         reply = []
         for one in replys:
@@ -820,7 +820,7 @@ class getPointFilm(View):
 
         the_film = one[0]
         isGood=False
-        goods = Mark.objects.filter(user=user, firm=the_film)
+        goods = Mark.objects.filter(user=user, film=the_film)
 
         if (goods.count() != 0):
             isGood=True
@@ -841,7 +841,7 @@ class getPointFilm(View):
                 'title': the_film.name,
                        'image': the_film.head_image.url,
                        'film_id': the_film.id,
-                       'mark': the_film.score/the_film.marked_members,
+                       'mark': the_film.score/the_film.marked_members if the_film.marked_members!=0 else 0,
                        'relase_date': str(the_film.on_time.strftime('%Y-%m-%d')),
                        'time': str(the_film.on_time.strftime('%H:%M:%S')),
                        'marked_members': the_film.marked_members,
@@ -881,11 +881,11 @@ class scorePointFilm(View):
         firm=one[0]
 
         isGood = False
-        goods = Mark.objects.filter(user=user, firm__id=id)
+        goods = Mark.objects.filter(user=user, film__id=id)
 
 
         if(goods.count()==0):
-            Mark.objects.create(user=user,firm=firm,score=score)
+            Mark.objects.create(user=user,film=firm,score=score)
             firm.marked_members+=1
             firm.score+=score
             firm.save()
@@ -935,9 +935,9 @@ class reviewPointFilm(View):
         title = request.POST.get("title", "None")
         subtitle = request.POST.get("subtitle", "None")
         content = request.POST.get("content","None")
-        thumbnail = request.File.get("thumbnail", "None")
+        thumbnail = request.FILE.get("thumbnail", "None")
 
-        FilmReview.objects.create(active=True,author=user,title=title,firm=firm,subtitle=subtitle,
+        FilmReview.objects.create(active=True,author=user,title=title,film=firm,subtitle=subtitle,
                                   content=content,thumbnail=thumbnail)
         firm.commented_member+=1
         firm.save()
@@ -971,7 +971,7 @@ class replyPointFilm(View):
         title = request.POST.get("title", "None")
         content = request.POST.get("content", "None")
 
-        FilmComment.objects.create(active=True, author=user, title=title, firm=firm,
+        FilmComment.objects.create(active=True, author=user, title=title, film=firm,
                                   content=content)
         firm.commented_member += 1
         firm.save()
