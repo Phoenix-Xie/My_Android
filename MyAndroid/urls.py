@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
+from MyAndroid import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include("Api.urls",namespace="API")),#前端使用的接口的地址
-]
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -207,7 +207,7 @@ class changeHeadImage(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
 
         heheadImage = request.FILES.get("headImage", "default/1.png")
@@ -228,7 +228,7 @@ class changeNickName(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         nickName = request.POST.get("nickName",None)
         if nickName !=None and nickName!="":
@@ -253,10 +253,10 @@ class getMyFirmComment(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
 
-        posts=FilmReview.objects.filter(user=user).order_by("-create_time")
+        posts=FilmReview.objects.filter(author=user).order_by("-create_time")
 
 
         result = []
@@ -283,10 +283,10 @@ class getMyNewsComment(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
 
-        posts = NewsComment.objects.filter(user=user).order_by("-create_time")
+        posts = NewsComment.objects.filter(author=user).order_by("-create_time")
 
         result = []
         for one in posts:
@@ -313,7 +313,7 @@ class deleteMyNewsComment(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
 
         id=request.POST.get("id") # 要删除对象的id
@@ -373,7 +373,7 @@ class getPointNews(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
         operaType=int(request.POST.get("operaType", 0)) # 1点赞 0取消赞
@@ -432,7 +432,7 @@ class goodPointNews(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
         operaType=int(request.POST.get("operaType", 0)) # 1点赞 0取消赞
@@ -514,7 +514,7 @@ class replyPointNews(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
         operaType = int(request.POST.get("operaType", 0))  # 1点赞 0取消赞
@@ -568,7 +568,8 @@ class getHotFilmReview(View):
                 'comment_num': one.commented_members,
                 'create_time': str(one.create_time.strftime('%Y-%m-%d %H:%M:%S')),
                 'update_time': str(one.update_time.strftime('%Y-%m-%d %H:%M:%S')),
-                'image': one.thumbnail.url,}
+                'image': one.thumbnail.url,
+                "poster":one.film.poster.url} # 电影海报照片
             result.append(temp)
 
         posts = serializers.serialize("json", posts)
@@ -583,7 +584,7 @@ class getPointFilmReview(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
 
@@ -623,10 +624,10 @@ class getPointFilmReview(View):
             reply.append(temp)
 
         one=fileReview
-        temp = {"id": one.id, "author": one.author.nickName, "photo": str(one.picture),
+        temp = {"id": one.id, "author": one.author.nickName, "photo": str(one.thumbnail),
                 "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")), "Title": one.title,
-                "clickNum": one.hits, "replyNum": one.commented_members, "content": one.Content,
-                "isGood":isGood,"replys": reply,"replyNum":replyNum
+                "clickNum": one.hits, "replyNum": one.commented_members, "content": one.content,
+                "isGood":isGood,"replys": reply,"replyNum":replyNum,"poster":one.film.poster.url
                 }
 
 
@@ -646,7 +647,7 @@ class goodPointFilmReview(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
         operaType=int(request.POST.get("operaType", 0)) # 1点赞 0取消赞
@@ -726,7 +727,7 @@ class replyPointFilmReview(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
         operaType = int(request.POST.get("operaType", 0))  # 1点赞 0取消赞
@@ -741,7 +742,7 @@ class replyPointFilmReview(View):
         news = one[0]
 
         content=request.POST.get("content")
-        FilmReviewComment.objects.create(news=news,author=user,content=content)
+        FilmReviewComment.objects.create(film_review=news,author=user,content=content)
 
         news.commented_members+=1
         news.save()
@@ -788,15 +789,65 @@ class getFilmList(View):
         return CrossDomainReturn(result)
 
 
-# 获取指定id的影评
+# 获取指定id的电影
 class getPointFilm(View):
     '''
     '''
+    def get(self,request):
+        id = int(request.GET.get("id", 0))
+
+        if id == 0:
+            result = {"state": -3, "msg": "错误请求"}
+            return CrossDomainReturn(result)
+        one = Film.objects.filter(id=id, active=True)
+        if one.count() <= 0:
+            result = {"state": -2, "msg": "该电影不存在或已被删除"}
+            return CrossDomainReturn(result)
+
+        # fileReview=one[0]
+        # fileReview.hits+=1
+        # fileReview.save()
+
+        # if one.fromUser == user:  # 如果是本人登录的话,更新最后的已读访问
+        #     one.lastDetectNum = one.replyNum
+        #     aa = ReplyInfo.objects.filter(toPost=one)
+        #     aa.update(isRead=True)
+
+        the_film = one[0]
+
+
+        replys = FilmReview.objects.filter(film__id=id, active=True)
+        replyNum = replys.count()
+        reply = []
+
+        for one in replys:
+            temp = {"id": one.id, "author": one.author.nickName, "autherHeadPhoto": str(one.author.headImage),
+                    "Time": str(one.create_time.strftime("%Y-%m-%d %H:%M:%S")),
+                    "title": one.title
+                    }
+            reply.append(temp)
+
+        temp = {"id": the_film.id,
+                'title': the_film.name,
+                'image': the_film.head_image.url,
+                'mark': the_film.score / the_film.marked_members if the_film.marked_members != 0 else 0,
+                'relase_date': str(the_film.on_time.strftime('%Y-%m-%d')),
+                'time': str(the_film.on_time.strftime('%H:%M:%S')),
+                'marked_members': the_film.marked_members,
+                'comment_members': the_film.commented_member,
+                "replys": reply, "replyNum": replyNum,
+                "displayTime": the_film.displayTime,  # 上映时间
+                }
+
+        result = {"state": 1, "result": temp}
+
+        return CrossDomainReturn(result)
+
 
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
 
@@ -840,13 +891,13 @@ class getPointFilm(View):
         temp = {"id": the_film.id,
                 'title': the_film.name,
                        'image': the_film.head_image.url,
-                       'film_id': the_film.id,
                        'mark': the_film.score/the_film.marked_members if the_film.marked_members!=0 else 0,
                        'relase_date': str(the_film.on_time.strftime('%Y-%m-%d')),
                        'time': str(the_film.on_time.strftime('%H:%M:%S')),
                        'marked_members': the_film.marked_members,
                        'comment_members': the_film.commented_member,
-                        "isMark":isGood,"replys":reply,"replyNum":replyNum
+                        "isMark":isGood,"replys":reply,"replyNum":replyNum,
+                        "displayTime":the_film.displayTime,#上映时间
                 }
 
 
@@ -866,14 +917,15 @@ class scorePointFilm(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
         score=int(request.POST.get("score", 0))
         if id == 0:
             result = {"state": -3, "msg": "错误请求"}
             return CrossDomainReturn(result)
-        one = FilmReview.objects.filter(id=id)
+
+        one = Film.objects.filter(id=id)
         if one.count()<= 0:
             result = {"state": -2, "msg": "该帖子不存在或已被删除"}
             return CrossDomainReturn(result)
@@ -905,7 +957,7 @@ class reviewPointFilm(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
 
@@ -935,7 +987,7 @@ class reviewPointFilm(View):
         title = request.POST.get("title", "None")
         subtitle = request.POST.get("subtitle", "None")
         content = request.POST.get("content","None")
-        thumbnail = request.FILE.get("thumbnail", "None")
+        thumbnail = request.FILES.get("thumbnail", "None")
 
         FilmReview.objects.create(active=True,author=user,title=title,film=firm,subtitle=subtitle,
                                   content=content,thumbnail=thumbnail)
@@ -956,7 +1008,7 @@ class replyPointFilm(View):
     def post(self, request):
         user = checkUserLogin(request)
         if not user:
-            temp = {"state": -1, "msg": "尚未登陆"}
+            temp = {"state": -1, "msg": "尚未登录"}
             return CrossDomainReturn(temp)
         id = int(request.POST.get("id", 0))
         if id == 0:
@@ -968,10 +1020,9 @@ class replyPointFilm(View):
             return CrossDomainReturn(result)
         firm = one[0]
 
-        title = request.POST.get("title", "None")
         content = request.POST.get("content", "None")
 
-        FilmComment.objects.create(active=True, author=user, title=title, film=firm,
+        FilmComment.objects.create(active=True, author=user,  film=firm,
                                   content=content)
         firm.commented_member += 1
         firm.save()

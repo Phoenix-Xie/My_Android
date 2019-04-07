@@ -57,6 +57,7 @@ class Film(models.Model):
     commented_member = models.IntegerField(default=0, verbose_name=u'评论人数')
     active = models.BooleanField(default=True, verbose_name=u'情况')
     isOnScreen=models.BooleanField(verbose_name="是否上映",default=True)
+    displayTime=models.IntegerField(default=0,verbose_name="电影时长",null=True,blank=True)
     class Meta:
         verbose_name = u'电影'
         verbose_name_plural = verbose_name
